@@ -1,8 +1,9 @@
 package main
 
 import (
-    "net/http"
     "fmt"
+    "github.com/antonlindstrom/httpheadgo/httphead"
+    "net/http"
 )
 
 // Run HEAD request against url, fail will result
@@ -19,7 +20,7 @@ func HeadCheck(url string) (string, int) {
 
 // Main function
 func main() {
-    url := "http://example.com"
+    _, url := config.GetConfig()
 
     protocol, statusCode := HeadCheck(url)
 
