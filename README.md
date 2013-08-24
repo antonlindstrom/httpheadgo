@@ -21,6 +21,6 @@ Building:
 Example:
 
     $ ./bin/httphead 
-    Host: http://example.com
+    Checking Example (http://example.com)
     Status: HTTP/1.1 200
-    http://example.com OK
+    OK - Example

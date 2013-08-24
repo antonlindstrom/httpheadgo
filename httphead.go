@@ -20,16 +20,16 @@ func HeadCheck(url string) (string, int) {
 
 // Main function
 func main() {
-    _, url := config.GetConfig()
+    name, url := config.GetConfig()
 
+    fmt.Printf("Checking %s (%s)\n", name, url)
     protocol, statusCode := HeadCheck(url)
 
-    fmt.Printf("Host: %s\n", url)
     fmt.Printf("Status: %s %d\n", protocol, statusCode)
 
     if statusCode >= 200 && statusCode < 300 {
-        fmt.Printf("%s OK\n", url)
+        fmt.Printf("OK - %s\n", name)
     } else {
-        fmt.Printf("%s FAIL\n", url)
+        fmt.Printf("FAIL - %s\n", name)
     }
 }
