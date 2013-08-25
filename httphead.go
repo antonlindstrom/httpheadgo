@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "github.com/antonlindstrom/httpheadgo/httphead/config"
+    "github.com/antonlindstrom/httpheadgo/httphead/docker"
     "net/http"
 )
 
@@ -31,5 +32,8 @@ func main() {
         fmt.Printf("OK - %s\n", c["Name"])
     } else {
         fmt.Printf("FAIL - %s\n", c["Name"])
+        if c["Docker"] == "enabled" {
+            docker.BootContainer(c["DockerImage"])
+        }
     }
 }
