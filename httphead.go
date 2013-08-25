@@ -28,7 +28,7 @@ func main() {
 
     fmt.Printf("Status: %s %d\n", protocol, statusCode)
 
-    if statusCode >= 200 && statusCode < 300 {
+    if statusCode >= 200 && statusCode < 400 {
         fmt.Printf("OK - %s\n", c["Name"])
     } else {
         fmt.Printf("FAIL - %s\n", c["Name"])
