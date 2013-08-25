@@ -29,9 +29,7 @@ func ParseJson(file []byte) (map[string]string) {
 }
 
 // Get Config and return name and url
-func GetConfig() (string, string) {
+func GetConfig() (map[string]string) {
     file := LoadFile("./app.json")
-    data := ParseJson(file)
-
-    return data["Name"], data["Url"]
+    return ParseJson(file)
 }

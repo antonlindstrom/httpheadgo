@@ -2,7 +2,7 @@ package main
 
 import (
     "fmt"
-    "github.com/antonlindstrom/httpheadgo/httphead"
+    "github.com/antonlindstrom/httpheadgo/httphead/config"
     "net/http"
 )
 
@@ -20,16 +20,16 @@ func HeadCheck(url string) (string, int) {
 
 // Main function
 func main() {
-    name, url := config.GetConfig()
+    c := config.GetConfig()
 
-    fmt.Printf("Checking %s (%s)\n", name, url)
-    protocol, statusCode := HeadCheck(url)
+    fmt.Printf("Checking %s (%s)\n", c["Name"], c["Url"])
+    protocol, statusCode := HeadCheck(c["Url"])
 
     fmt.Printf("Status: %s %d\n", protocol, statusCode)
 
     if statusCode >= 200 && statusCode < 300 {
-        fmt.Printf("OK - %s\n", name)
+        fmt.Printf("OK - %s\n", c["Name"])
     } else {
-        fmt.Printf("FAIL - %s\n", name)
+        fmt.Printf("FAIL - %s\n", c["Name"])
     }
 }
