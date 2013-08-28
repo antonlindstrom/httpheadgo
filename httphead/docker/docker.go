@@ -5,15 +5,16 @@ import (
     "fmt"
     "github.com/antonlindstrom/httpheadgo/httphead/config"
     "io/ioutil"
+    "log"
     "net/http"
 )
 
 // Boot container (creates container and starts it)
 func BootContainer(image string) {
-    fmt.Printf("Creating container (image: %s)\n", image)
+    log.Printf("Creating container (image: %s)\n", image)
     id := CreateContainer(image)
 
-    fmt.Printf("Starting container (id: %s)\n", id)
+    log.Printf("Starting container (id: %s)\n", id)
     StartContainer(id)
 }
 
@@ -25,7 +26,7 @@ func StartContainer(id string) ([]byte, error) {
     body,err := PostRequest(path,payload)
 
     if err != nil {
-        fmt.Printf("Error: %s\n", err)
+        log.Printf("Error: %s\n", err)
         return nil, err
     }
 

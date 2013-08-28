@@ -4,6 +4,7 @@ import (
     "fmt"
     "github.com/antonlindstrom/httpheadgo/httphead/config"
     "github.com/antonlindstrom/httpheadgo/httphead/docker"
+    "log"
     "net/http"
 )
 
@@ -19,21 +20,39 @@ func HeadCheck(url string) (string, int) {
     return resp.Proto, resp.StatusCode
 }
 
-// Main function
-func main() {
+// Initiate a check
+func InitiateCheck(ch chan int) {
     c := config.GetConfig()
 
-    fmt.Printf("Checking %s (%s)\n", c["Name"], c["Url"])
+    log.Printf("Checking %s (%s)\n", c["Name"], c["Url"])
     protocol, statusCode := HeadCheck(c["Url"])
 
-    fmt.Printf("Status: %s %d\n", protocol, statusCode)
+    log.Printf("Status: %s %d\n", protocol, statusCode)
 
     if statusCode >= 200 && statusCode < 400 {
-        fmt.Printf("OK - %s\n", c["Name"])
+        log.Printf("OK - %s\n", c["Name"])
     } else {
-        fmt.Printf("FAIL - %s\n", c["Name"])
+        log.Printf("FAIL - %s\n", c["Name"])
         if c["Docker"] == "enabled" {
             docker.BootContainer(c["DockerImage"])
         }
     }
+
+    ch <- statusCode
+    close(ch)
+}
+
+// Main function
+func main() {
+    log.Printf("Serving /check on port 8080\n")
+
+    http.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
+        ch := make(chan int)
+        go InitiateCheck(ch)
+        checkResult := <- ch
+
+        fmt.Fprintf(w, "Status: %d", checkResult)
+    })
+
+    log.Fatal(http.ListenAndServe(":8080", nil))
 }
