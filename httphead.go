@@ -21,7 +21,7 @@ func HeadCheck(url string) (string, int) {
 }
 
 // Initiate a check
-func InitiateCheck(ch chan int) {
+func InitiateCheck() int {
     c := config.GetConfig()
 
     log.Printf("Checking %s (%s)\n", c["Name"], c["Url"])
@@ -38,8 +38,7 @@ func InitiateCheck(ch chan int) {
         }
     }
 
-    ch <- statusCode
-    close(ch)
+		return statusCode
 }
 
 // Main function
@@ -47,9 +46,7 @@ func main() {
     log.Printf("Serving /check on port 8080\n")
 
     http.HandleFunc("/check", func(w http.ResponseWriter, r *http.Request) {
-        ch := make(chan int)
-        go InitiateCheck(ch)
-        checkResult := <- ch
+        checkResult := InitiateCheck()
 
         fmt.Fprintf(w, "Status: %d", checkResult)
     })
