@@ -12,6 +12,8 @@ What this does is:
 I guess this isn't useful until a way to register the app in a proxy is
 implemented.
 
+Docker interface should be implemented with the official Docker Go client.
+
 To be able to load files, clone this repo to a directory like:
 
     $GOPATH/src/github.com/antonlindstrom/httpheadgo
